@@ -25,20 +25,20 @@ function getCoinInfo(selectedButton) {
 	
 	$('#myModal').modal('show');
 	//step 1 get the template
-	// var template = $("#coin-info-template").html();
-	// var renderTemplate = Mustache.render(template, data);
-	// $("#coins-table tbody").append(renderTemplate);
+	var template = $("#more-info").html();
+	var renderTemplate = Mustache.render(template, data);
+	$("#coins-table tbody").append(renderTemplate);
 
-	// var dateArray = [];
-	// var priceArray = [];
+	var dateArray = [];
+	var priceArray = [];
 
-	// $.each(historicalData.data, function(index, value){
-	// 	dateArray.push(value.date);
-	// 	priceArray.push(value.priceUsd);
-	// })
+	$.each(historicalData.data, function(index, value){
+		dateArray.push(value.date);
+		priceArray.push(value.priceUsd);
+	})
 
-	// //Generate the chart with the generated data
-	// generateChart(dateArray, priceArray)
+	//Generate the chart with the generated data
+	generateChart(dateArray, priceArray)
 
 	//step 2 Render output with Mustache.js
 
