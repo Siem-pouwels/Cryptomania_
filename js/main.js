@@ -8,7 +8,7 @@ function getAllCoins() {
 			console.log(data.data[0].id);
 			for (let i = 0; i < data.data.length; i++) {
 				data.data[i] = data.data[i]
-			  } 
+			  }
 			var template = $("#all-coins-template").html();
 			var renderTemplate = Mustache.render(template, data);
 			$("#coins-table tbody").append(renderTemplate);
@@ -22,21 +22,23 @@ function getCoinInfo(selectedButton) {
 	var cryptoId = $(selectedButton).closest("tr").find(".crypto-id").text();
 	var cryptoPrice = $(selectedButton).closest("tr").find(".crypto-price").text();
 	console.log(cryptoId);
+	
+	$('#myModal').modal('show');
 	//step 1 get the template
-	var template = $("#coin-info-template").html();
-	var renderTemplate = Mustache.render(template, data);
-	$("#coins-table tbody").append(renderTemplate);
+	// var template = $("#coin-info-template").html();
+	// var renderTemplate = Mustache.render(template, data);
+	// $("#coins-table tbody").append(renderTemplate);
 
-	var dateArray = [];
-	var priceArray = [];
+	// var dateArray = [];
+	// var priceArray = [];
 
-	$.each(historicalData.data, function(index, value){
-		dateArray.push(value.date);
-		priceArray.push(value.priceUsd);
-	})
+	// $.each(historicalData.data, function(index, value){
+	// 	dateArray.push(value.date);
+	// 	priceArray.push(value.priceUsd);
+	// })
 
-	//Generate the chart with the generated data
-	generateChart(dateArray, priceArray)
+	// //Generate the chart with the generated data
+	// generateChart(dateArray, priceArray)
 
 	//step 2 Render output with Mustache.js
 
@@ -44,21 +46,21 @@ function getCoinInfo(selectedButton) {
 	//step 3 append the data to the body
 
 
-	$.ajax({ 
-		type: "GET",
-		dataType: "json",
-		url: "https://api.coincap.io/v2/assets/"+cryptoId+"/history",
+	// $.ajax({ 
+	// 	type: "GET",
+	// 	dataType: "json",
+	// 	url: "https://api.coincap.io/v2/assets/"+cryptoId+"/history",
  
-		success: function(data){
-			console.log(data.data[0].id);
-			for (let i = 0; i < data.data.length; i++) {
-				data.data[i] = data.data[i]
-			  }
-			var template = $("#all-coins-template").html();
-			var renderTemplate = Mustache.render(template, data);
-			$("#coins-table tbody").append(renderTemplate);
-		}
-	 });
+	// 	success: function(data){
+	// 		console.log(data.data[0].id);
+	// 		for (let i = 0; i < data.data.length; i++) {
+	// 			data.data[i] = data.data[i]
+	// 		  }
+	// 		var template = $("#all-coins-template").html();
+	// 		var renderTemplate = Mustache.render(template, data);
+	// 		$("#coins-table tbody").append(renderTemplate);
+	// 	}
+	//  });
 	
 	
 }
@@ -166,3 +168,12 @@ $(document).ready(function(){
 
 
 });
+
+
+
+
+
+
+// $('#myModal').modal('toggle');
+// $('#myModal').modal('show');
+// $('#myModal').modal('hide');
