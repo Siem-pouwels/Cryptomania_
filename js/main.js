@@ -9,8 +9,15 @@ function getAllCoins() {
 			for (let i = 0; i < data.data.length; i++) {
 				data.data[i] = data.data[i]
 			  }
-			  let figure = data.data[0].priceUsd;
-			  roundFigures(parseFloat(figure));
+
+			$.each(data.data, function(index, value){
+				value.priceUsd = roundFigures(parseFloat(value.priceUsd))
+				value.marketCapUsd = roundFigures(parseFloat(value.marketCapUsd))
+				value.volumeUsd24Hr = roundFigures(parseFloat(value.volumeUsd24Hr))
+			})
+			// console.log(data.data[0].priceUsd)
+			// let figure = data.data[0].priceUsd;
+			// roundFigures(parseFloat(figure));
 			var template = $("#all-coins-template").html();
 			var renderTemplate = Mustache.render(template, data);
 			$("#coins-table tbody").append(renderTemplate);
@@ -42,6 +49,12 @@ function getCoinInfo(selectedButton) {
 	 });
 }
 
+function addCoinInfo() 
+{
+	var cryptoId = $(selectedButton).closest("tr").find(".crypto-id").text();
+	var cryptoPrice = $(selectedButton).closest("tr").find(".crypto-price").text();
+	console.log(cryptoId);
+}
 
 function roundFigures(figure){
 	nr = Math.round((figure + Number.EPSILON) * 100) / 100;
@@ -66,6 +79,11 @@ function getPortfolio() {
 			// $("#coins-table tbody").append(renderTemplate);
 	   }
 	});
+}
+
+function addCrypto() {
+	var form = $("form #add-crypto-form")
+	console.log(form)
 }
 
 function generateChart(chartDate, chartPrice) {
@@ -129,6 +147,10 @@ $(document).ready(function(){
 
 	$(document).on('click','.coins-info-btn',function() {
 		getCoinInfo(this);
+	});
+
+	$(document).on('click','.coins-add-btn',function() {
+		addCoinInfo(this);
 	});
 	
 	// $('.coins-info-btn').click(function () {

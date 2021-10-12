@@ -8,6 +8,7 @@
 					<th>Market Cap</th>
 					<th>%24hr</th>
 					<th>More info</th>
+					<th>Add</th>
 				</tr>
 			</thead>
 			<tbody>
