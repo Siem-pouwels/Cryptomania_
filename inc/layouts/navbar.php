@@ -9,7 +9,7 @@
         <a class="nav-link" href="http://localhost/cryptomania/">Home</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/cryptofolio.php">Cryptofolio</a>
+        <a class="nav-link" href="http://localhost/cryptomania/cryptofolio.php">Cryptofolio</a>
       </li>
     </ul>
   </div>

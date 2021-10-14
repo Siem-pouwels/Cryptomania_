@@ -1,5 +1,5 @@
 <template id="all-coins-template">
-        {{#data}}
+    {{#data}}
         <tr>
             <td class="crypto-symbol">{{symbol}}</td>
             <td class="crypto-id">{{id}}</td>
@@ -7,8 +7,8 @@
             <td class="crypto-marketCapUsd">{{marketCapUsd}}</td>
             <td class="crypto-volumeUsd24Hr">{{volumeUsd24Hr}}</td>
             <td><button class="coins-info-btn button btn-primary" id="{{id}}">More info</button></td>
-            <td><button class="coins-add-btn button btn-primary" id="{{id}}">Add</button></td>
+            <td><button class="show-crypto-modal button btn-primary" id="{{id}}">Add</button></td>
         </tr>
-        {{/data}}
-        <!-- <input type="submit" value="Submit"> -->
+    {{/data}}
+    <!-- <input type="submit" value="Submit"> -->
 </template>
