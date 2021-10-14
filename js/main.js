@@ -14,10 +14,15 @@ function getAllCoins() {
 				value.priceUsd = roundFigures(parseFloat(value.priceUsd))
 				value.marketCapUsd = roundFigures(parseFloat(value.marketCapUsd))
 				value.volumeUsd24Hr = roundFigures(parseFloat(value.volumeUsd24Hr))
+				value.symbolLowerCase = value.symbol.toLowerCase();
+				// if(value.volumeUsd24Hr > 0)
+				// {
+				// 	document.getElementById("text").innerHTML = event.data;
+        		// 	document.getElementById("text").style.color = color;
+				// }
+				console.log(value);
 			})
-			// console.log(data.data[0].priceUsd)
-			// let figure = data.data[0].priceUsd;
-			// roundFigures(parseFloat(figure));
+
 			var template = $("#all-coins-template").html();
 			var renderTemplate = Mustache.render(template, data);
 			$("#coins-table tbody").append(renderTemplate);
@@ -28,7 +33,7 @@ function getAllCoins() {
 function getCoinInfo(selectedButton) {
 	var cryptoId = $(selectedButton).closest("tr").find(".crypto-id").text();
 	var cryptoPrice = $(selectedButton).closest("tr").find(".crypto-price").text();
-	console.log(cryptoId);
+	//console.log(cryptoId);
 
 	$.ajax({
 		type: "GET",
@@ -53,12 +58,12 @@ function addCoinInfo()
 {
 	var cryptoId = $(selectedButton).closest("tr").find(".crypto-id").text();
 	var cryptoPrice = $(selectedButton).closest("tr").find(".crypto-price").text();
-	console.log(cryptoId);
+	//console.log(cryptoId);
 }
 
 function roundFigures(figure){
 	nr = Math.round((figure + Number.EPSILON) * 100) / 100;
-	console.log(nr)
+	//console.log(nr)
 	return nr;
 }
 
@@ -83,18 +88,18 @@ function getPortfolio() {
 
 function addCrypto() {
 	var form = $("form #add-crypto-form")
-	console.log(form)
+	//console.log(form)
 }
 
 function generateChart(chartDate, chartPrice) {
 	if (chart) {
 		chart.destroy()
 	}
-	console.log('dsafdsafadsafdsfdsafdsaafdsfdsfdssfda')
+	//console.log('dsafdsafadsafdsfdsafdsaafdsfdsfdssfda')
 	var ctx = document.getElementById('coin-history-chart').getContext('2d');
 	
 	
-	console.log(ctx)
+	//console.log(ctx)
 	var chart = new Chart(ctx, {
 			// The type of chart we want to create
 			type: 'line',
@@ -135,6 +140,7 @@ function generateChart(chartDate, chartPrice) {
 
 
 $(document).ready(function(){
+	$(".loading-container").fadeOut("slow");
 	if ($(document).data('#more-info-modal') == undefined) {
 		if (typeof chart == undefined) {
 			console.log("this");

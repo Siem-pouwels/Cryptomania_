@@ -1,6 +1,7 @@
 <template id="all-coins-template">
         {{#data}}
         <tr>
+            <!-- <td class="crypto-symbolLowerCase"><img src=""></img></td> -->
             <td class="crypto-symbol">{{symbol}}</td>
             <td class="crypto-id">{{id}}</td>
             <td class="crypto-priceUsd">{{priceUsd}}</td>
