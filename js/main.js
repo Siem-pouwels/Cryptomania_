@@ -110,9 +110,24 @@ function addCryptoModalShow(selectedButton) {
 	});
 }
 
-function addCrypto(selectedButton) {
-	var form = $("form #add-crypto-form")
-	console.log(form)
+function addCrypto() {
+	var amount = document.getElementById("add-amount").value;
+	// console.log(input);
+
+	$.ajax({
+		type: "POST",
+		url: "http://127.0.0.1:8000/api/portfolio",
+		data: {
+			amount: amount
+		},
+		cache: false,
+		success: function (data) {
+			console.log('test')
+		},
+		error: function (xhr, status, error) {
+			console.error(xhr);
+		}
+	});
 }
 
 function generateChart(chartDate, chartPrice) {
@@ -162,16 +177,38 @@ function generateChart(chartDate, chartPrice) {
 	});
 }
 
+function createUser() {
+	var email = document.getElementById("email-create").value;
+	var password = document.getElementById("password-create").value;
+	// console.log(input);
+
+	$.ajax({
+		type: "POST",
+		url: "http://127.0.0.1:8000/api/user/create",
+		data: {
+			email: email,
+			password: password,
+		},
+		cache: false,
+		success: function (data) {
+			console.log('test')
+		},
+		error: function (xhr, status, error) {
+			console.error(xhr);
+		}
+	});
+}
+
 
 $(document).ready(function(){
 	$(".loading-container").fadeOut("slow");
-	if ($(document).data('#more-info-modal') == undefined) {
-		if (typeof chart == undefined) {
-			console.log("this");
-			chart.destroy()
-		}
-	}
-
+	// if ($(document).data('#more-info-modal') == undefined) {
+	// 	if (typeof chart == undefined) {
+	// 		console.log("this");
+	// 		chart.destroy()
+	// 	}
+	// }
+	getAllCoins();
 
 	$(document).on('click', '.coins-info-btn', function () {
 		getCoinInfo(this);
@@ -181,20 +218,23 @@ $(document).ready(function(){
 		addCryptoModalShow(this);
 	});
 
-	$(document).on('click', '#coins-add-btn', function () {
-		addCrypto(this);
+	$(document).on('click', '#submit-crypto', function (event) {
+		console.log('adshhfjsafsadfmsadfkmjsafdjsadfjlsdflafsd')
+		event.preventDefault();
+		addCrypto();
 	});
 
-	$(document).on('click', '#more-info-modal', function () {
-		console.log("safdsfdafdsafdsafdsasfdafdsafdsafdsfdsafdsafdasfdsadfsafdsafdsaaaaaaa")
-		// var chart = document.getElementById('coin-history-chart').getContext('2d');
-		ctx.destroy();
-		$('#more-info-modal').modal('hide');
+	$(document).on('click', '#create-acount', function (event) {
+		event.preventDefault();
+		createUser();
 	});
 
-	$(".add-crypto").on("click", function () {
-		addCrypto(this);
-	});
+	// $(document).on('click', '#more-info-modal', function () {
+	// 	console.log("safdsfdafdsafdsafdsasfdafdsafdsafdsfdsafdsafdasfdsadfsafdsafdsaaaaaaa")
+	// 	// var chart = document.getElementById('coin-history-chart').getContext('2d');
+	// 	ctx.destroy();
+	// 	$('#more-info-modal').modal('hide');
+	// });
 });
 // $('#myModal').modal('toggle');
 // $('#myModal').modal('show');
