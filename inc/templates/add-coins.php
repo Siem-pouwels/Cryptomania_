@@ -1,5 +1,5 @@
 <template id="add-coins-template">
-    <div class="modal-content">
+    <div class="modal-content" id="add-coin-modal" aria-hidden="true">
         {{#data}}
         <div class="modal-header">
             <h4 class="modal-title">{{id}}</h4>

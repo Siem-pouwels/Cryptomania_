@@ -17,3 +17,8 @@
 .loading-container {
     text-align: center;
 }
+
+.symbol-images {
+	height: 25px;
+	width: 25px;
+}
