@@ -11,6 +11,12 @@
       <li class="nav-item">
         <a class="nav-link" href="http://localhost/cryptomania/cryptofolio.php">Cryptofolio</a>
       </li>
+      <li class="nav-item" id="show-create-account">
+        <span class="nav-link">Create account</span>
+      </li>
+      <li class="nav-item" id="show-login-account">
+        <span class="nav-link">Login</span>
+      </li>
     </ul>
   </div>
 </nav>

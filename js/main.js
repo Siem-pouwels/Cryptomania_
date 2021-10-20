@@ -20,11 +20,11 @@ function getAllCoins() {
 				// 	document.getElementById("text").innerHTML = event.data;
         		// 	document.getElementById("text").style.color = color;
 				// }
-				console.log(value);
+				// console.log(value);
 			})
 
 			var template = $("#all-coins-template").html();
-			console.log(template)
+			// console.log(template)
 			var renderTemplate = Mustache.render(template, data);
 			$("#coins-table tbody").append(renderTemplate);
 		}
@@ -34,7 +34,7 @@ function getAllCoins() {
 function getCoinInfo(selectedButton) {
 	var cryptoId = $(selectedButton).closest("tr").find(".crypto-id").text();
 	var cryptoPrice = $(selectedButton).closest("tr").find(".crypto-price").text();
-	console.log(cryptoId);
+	// console.log(cryptoId);
 
 	$.ajax({
 		type: "GET",
@@ -59,7 +59,7 @@ function addCoinInfo()
 {
 	var cryptoId = $(selectedButton).closest("tr").find(".crypto-id").text();
 	var cryptoPrice = $(selectedButton).closest("tr").find(".crypto-price").text();
-	console.log(cryptoId);
+	// console.log(cryptoId);
 }
 
 function roundFigures(figure) {
@@ -79,7 +79,7 @@ function getPortfolio() {
 		url: "http://127.0.0.1:8000/api/portfolio",
 		success: function (data) {
 			// coins = data;
-			console.log(data)
+			// console.log(data)
 			// var template = $("#all-coins").html();
 			// var renderTemplate = Mustache.render(template, coins);
 			// $("#coins-table tbody").append(renderTemplate);
@@ -102,7 +102,7 @@ function addCryptoModalShow(selectedButton) {
 			// $('#add-coin-modal').modal('show');
 			// var template = $("#all-coins-template").html();
 			var template = $("#add-coins-template").html();
-			console.log(template)
+			// console.log(template)
 			var renderTemplate = Mustache.render(template, data);
 			$("#add-coin-modal .modal-dialog").append(renderTemplate);
 			$('#add-coin-modal').modal('show');
@@ -138,7 +138,7 @@ function generateChart(chartDate, chartPrice) {
 	var ctx = document.getElementById('coin-history-chart').getContext('2d');
 	
 	
-	console.log(ctx)
+	// console.log(ctx)
 	var chart = new Chart(ctx, {
 		// The type of chart we want to create
 		type: 'line',
@@ -184,6 +184,10 @@ function createUser() {
 
 	$.ajax({
 		type: "POST",
+		dataType: "json",
+		headers: [
+		'Access-Control-Allow-Origin',
+		],
 		url: "http://127.0.0.1:8000/api/user/create",
 		data: {
 			email: email,
@@ -191,7 +195,34 @@ function createUser() {
 		},
 		cache: false,
 		success: function (data) {
-			console.log('test')
+			console.log('Created user succesful')
+		},
+		error: function (xhr, status, error) {
+			console.error(xhr);
+		}
+	});
+}
+
+function loginUser() {
+	var email = document.getElementById("email-login").value;
+	var password = document.getElementById("password-login").value;
+	// console.log(input);
+
+	$.ajax({
+		type: "POST",
+		dataType: "json",
+		headers: [
+		'Access-Control-Allow-Origin',
+		],
+		url: "http://127.0.0.1:8000/api/user/login",
+		data: {
+			email: email,
+			password: password,
+		},
+		cache: false,
+		success: function (data) {
+			console.log("coookieeees")
+			console.log(document.cookie)
 		},
 		error: function (xhr, status, error) {
 			console.error(xhr);
@@ -201,6 +232,8 @@ function createUser() {
 
 
 $(document).ready(function(){
+	document.cookie = "username=John Doe";
+	console.log(document.cookie)
 	$(".loading-container").fadeOut("slow");
 	// if ($(document).data('#more-info-modal') == undefined) {
 	// 	if (typeof chart == undefined) {
@@ -219,15 +252,33 @@ $(document).ready(function(){
 	});
 
 	$(document).on('click', '#submit-crypto', function (event) {
-		console.log('adshhfjsafsadfmsadfkmjsafdjsadfjlsdflafsd')
 		event.preventDefault();
 		addCrypto();
 	});
 
-	$(document).on('click', '#create-acount', function (event) {
+	$(document).on('click', '#show-create-account', function () {
+		console.log('test')
+		$('#create-account-modal').modal('show');
+	});
+
+	$(document).on('click', '#create-account', function (event) {
 		event.preventDefault();
 		createUser();
 	});
+	
+	$(document).on('click', '#show-login-account', function () {
+		console.log('test')
+		$('#login-account-modal').modal('show');
+	});
+
+	$(document).on('click', '#login-account', function (event) {
+		event.preventDefault();
+		loginUser();
+	});
+
+	// $(document).on('click', '#more-info-modal.modal.fade.show', function (event) {
+	// 	// console.log('test')
+	// });
 
 	// $(document).on('click', '#more-info-modal', function () {
 	// 	console.log("safdsfdafdsafdsafdsasfdafdsafdsafdsfdsafdsafdasfdsadfsafdsafdsaaaaaaa")

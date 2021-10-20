@@ -13,11 +13,13 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::post('user/login', 'App\Http\Controllers\AuthController@login');
+
 Route::middleware(['auth'])->group(function () {
     Route::prefix('portfolio')->group(function () {
         Route::post('', 'App\Http\Controllers\PortfolioController@add');
     });
-    Route::prefix('users')->group(function () {
+    Route::prefix('user')->group(function () {
         Route::post('create', 'App\Http\Controllers\AuthController@create');
     });
 });
