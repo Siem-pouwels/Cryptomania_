@@ -123,7 +123,7 @@ function addCrypto() {
 		},
 		cache: false,
 		success: function (data) {
-			console.log('test')
+			console.log(data)
 		},
 		error: function (xhr, status, error) {
 			console.error(xhr);
@@ -231,6 +231,24 @@ function loginUser() {
 	});
 }
 
+function succesPopup(message,timeout){
+	if(timeout == undefined){
+	  timeout = 2.5
+	}
+	var a_message = "";
+	a_message += "<div class='alert alert-success alert-dismissible fade show' role='alert'>";
+	a_message +=  "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>";
+	a_message +=  "<strong>Succes!</strong> "+message;
+	a_message += "</div>";
+	$('body').prepend(a_message)
+  
+	if(timeout != 0){
+	  setTimeout(function () {
+		$('.alert').alert('close')
+	  }, timeout*1000);
+	}
+  }
+
 
 $(document).ready(function(){
 	document.cookie = "username=John Doe";
@@ -255,6 +273,8 @@ $(document).ready(function(){
 	$(document).on('click', '#submit-crypto', function (event) {
 		event.preventDefault();
 		addCrypto();
+		$('#add-coin-modal').modal('hide')
+		succesPopup("succesfully added coins to wallet")
 	});
 
 	$(document).on('click', '#show-create-account', function () {
