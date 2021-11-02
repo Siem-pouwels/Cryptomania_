@@ -51,6 +51,7 @@ function getCoinInfo(selectedButton) {
 			})
 			generateChart(dateArray, priceArray)
 			$('#more-info-modal').modal('show');
+			//$("#more-info-modal").append(generateChart(dateArray, priceArray));
 		}
 	});
 }
@@ -101,11 +102,11 @@ function addCryptoModalShow(selectedButton) {
 			// $(".coins-table tbody").append(renderTemplate);
 			// $('#add-coin-modal').modal('show');
 			// var template = $("#all-coins-template").html();
-			var template = $("#add-coins-template").html();
+			var template = $("#add-coin-modal-content").html();
 			// console.log(template)
 			var renderTemplate = Mustache.render(template, data);
-			$("#add-coin-modal .modal-dialog").append(renderTemplate);
-			$('#add-coin-modal').modal('show');
+			$("#add-coin-modal").append(renderTemplate);
+			
 		}
 	});
 }
@@ -131,9 +132,9 @@ function addCrypto() {
 }
 
 function generateChart(chartDate, chartPrice) {
-	if (chart) {
-		chart.destroy()
-	}
+	// if (chart) {
+	// 	chart.destroy()
+	// }
 	console.log('dsafdsafadsafdsfdsafdsaafdsfdsfdssfda')
 	var ctx = document.getElementById('coin-history-chart').getContext('2d');
 	
@@ -243,13 +244,13 @@ $(document).ready(function(){
 	// }
 	getAllCoins();
 
-	$(document).on('click', '.coins-info-btn', function () {
-		getCoinInfo(this);
-	});
+	// $(document).on('click', '.coins-info-btn', function () {
+	// 	getCoinInfo(this);
+	// });
 
-	$(document).on('click', '.show-crypto-modal', function () {
-		addCryptoModalShow(this);
-	});
+	// $(document).on('click', '.show-crypto-modal', function () {
+	// 	addCryptoModalShow(this);
+	// });
 
 	$(document).on('click', '#submit-crypto', function (event) {
 		event.preventDefault();

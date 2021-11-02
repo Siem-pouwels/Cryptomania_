@@ -6,8 +6,8 @@
             <td class="crypto-priceUsd">{{priceUsd}}</td>
             <td class="crypto-marketCapUsd">{{marketCapUsd}}</td>
             <td class="crypto-volumeUsd24Hr">{{volumeUsd24Hr}}</td>
-            <td><button class="coins-info-btn button btn-primary" id="{{id}}" data-bs-toggle="modal" data-bs-target="#add-coin-modal">More info</button></td>
-            <td><button class="coins-add-btn button btn-primary" id="{{id}}">Add</button></td>
+            <td><button class="coins-info-btn button btn-primary" id="{{id}}" data-bs-toggle="modal" data-bs-target="#more-info-modal">More info</button></td>
+            <td><button class="coins-add-btn button btn-primary" id="{{id}}" data-bs-toggle="modal" data-bs-target="#add-coin-modal">Add</button></td>
         </tr>
         {{/data}}
         <!-- <input type="submit" value="Submit"> -->
