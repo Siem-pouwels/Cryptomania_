@@ -1,3 +1,38 @@
+function succesPopup(message,timeout){
+	if(timeout == undefined){
+	  timeout = 2.5
+	}
+	var a_message = "";
+	a_message += "<div class='alert alert-success alert-dismissible fade show' role='alert'>";
+	a_message +=  "<strong>Succes!</strong> "+message;
+	a_message += "</div>";
+	$('body').prepend(a_message)
+  
+	if(timeout != 0){
+	  setTimeout(function () {
+		$('.alert').alert('close')
+	  }, timeout*1000);
+	}
+  }
+
+function errorPopup(message,timeout){
+	if(timeout == undefined){
+	  timeout = 2.5
+	}
+	var a_message = "";
+	a_message += "<div class='alert alert-danger alert-dismissible fade show' role='alert'>";
+	a_message +=  "<strong>Error!</strong> "+message;
+	a_message += "</div>";
+	$('body').prepend(a_message)
+  
+	if(timeout != 0){
+	  setTimeout(function () {
+		$('.alert').alert('close')
+		console.log('close')
+	  }, timeout*1000);
+	}
+  }
+
 function getAllCoins() {
 	$.ajax({
 		type: "GET",
@@ -124,9 +159,11 @@ function addCrypto() {
 		cache: false,
 		success: function (data) {
 			console.log(data)
+			succesPopup("succesfully added coins to wallet")
 		},
 		error: function (xhr, status, error) {
 			console.error(xhr);
+			errorPopup("something went wrong")
 		}
 	});
 }
@@ -231,24 +268,6 @@ function loginUser() {
 	});
 }
 
-function succesPopup(message,timeout){
-	if(timeout == undefined){
-	  timeout = 2.5
-	}
-	var a_message = "";
-	a_message += "<div class='alert alert-success alert-dismissible fade show' role='alert'>";
-	a_message +=  "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>";
-	a_message +=  "<strong>Succes!</strong> "+message;
-	a_message += "</div>";
-	$('body').prepend(a_message)
-  
-	if(timeout != 0){
-	  setTimeout(function () {
-		$('.alert').alert('close')
-	  }, timeout*1000);
-	}
-  }
-
 
 $(document).ready(function(){
 	document.cookie = "username=John Doe";
@@ -274,7 +293,6 @@ $(document).ready(function(){
 		event.preventDefault();
 		addCrypto();
 		$('#add-coin-modal').modal('hide')
-		succesPopup("succesfully added coins to wallet")
 	});
 
 	$(document).on('click', '#show-create-account', function () {
