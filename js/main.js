@@ -79,12 +79,39 @@ function generateChart(chartDate, chartPrice) {
 	});
 }
 
+function getCoinInfo(selectedButton) {
+	var cryptoId = $(selectedButton).closest("tr").find(".crypto-id").text();
+	var cryptoPrice = $(selectedButton).closest("tr").find(".crypto-price").text();
+	// console.log(cryptoId);
 
+	$.ajax({
+		type: "GET",
+		dataType: "json",
+		url: "https://api.coincap.io/v2/assets/" + cryptoId + "/history?interval=d1",
+
+		success: function (historicalData) {
+			var dateArray = [];
+			var priceArray = [];
+
+			$.each(historicalData.data, function (index, value) {
+				dateArray.push(value.date);
+				priceArray.push(value.priceUsd);
+			})
+			generateChart(dateArray, priceArray)
+			// $('#more-info-modal').modal('show');
+			//$("#more-info-modal").append(generateChart(dateArray, priceArray));
+		}
+	});
+}
 
 
 $(document).ready(function(){
 	$(".loading-container").fadeOut("slow");
 
 	getAllCoins();
+
+	$(document).on('click', '.coins-info-btn', function () {
+		getCoinInfo(this);
+	});
 
 });
