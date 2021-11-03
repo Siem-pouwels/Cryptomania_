@@ -11,6 +11,9 @@
       <li class="nav-item">
         <a class="nav-link" href="http://localhost/cryptomania/cryptofolio.php">Cryptofolio</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="http://localhost/Cryptomania_/cryptonews.php">Crypto News</a>
+      </li>
       <li class="nav-item" id="show-create-account">
         <span class="nav-link">Create account</span>
       </li>

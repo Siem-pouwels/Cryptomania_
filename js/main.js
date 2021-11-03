@@ -1,4 +1,7 @@
 var deleteChart;
+var colorRedId = [];
+var colorGreenId = [];
+var renderTmp;
 
 function getAllCoins() {
 	$.ajax({
@@ -11,33 +14,52 @@ function getAllCoins() {
 			for (let i = 0; i < data.data.length; i++) {
 				data.data[i] = data.data[i]
 			}
+			changeColorState(data);
 
 			$.each(data.data, function (index, value) {
 				value.priceUsd = roundFigures(parseFloat(value.priceUsd))
 				value.marketCapUsd = roundFigures(parseFloat(value.marketCapUsd))
 				value.volumeUsd24Hr = roundFigures(parseFloat(value.volumeUsd24Hr))
 				value.symbolLowerCase = value.symbol.toLowerCase();
+				if(value.volumeUsd24Hr <= 0){
+					value.colorVolume = "red";
+				}
+				if(value.volumeUsd24Hr >= 0){
+					value.colorVolume = "green";
+				}
 			})
 
 			var template = $("#all-coins-template").html();
 			var renderTemplate = Mustache.render(template, data);
+			renderTmp = renderTemplate;
 			$("#coins-table tbody").append(renderTemplate);
 		}
 	});
 }
 
-
+function changeColorState(data){
+	for (let i = 0; i < data.data.length; i++) {
+		if(data.data[i].volumeUsd24Hr >= 0){
+			colorGreenId.push(data.data[i].volumeUsd24Hr);
+			
+		}
+		if(data.data[i].volumeUsd24Hr <= 0){
+			colorRedId.push(data.data[i].volumeUsd24Hr);
+		}
+	}
+}
 
 function roundFigures(figure) {
 	nr = Math.round((figure + Number.EPSILON) * 100) / 100;
 	//console.log(nr)
 	return nr;
+	
 }
 
 function generateChart(chartDate, chartPrice) {
 	var ctx = document.getElementById('coin-history-chart').getContext('2d');
 	if (!deleteChart) {
-		console.log('test');
+		//console.log('test');
 	}else{
 		deleteChart.destroy();
 	}
@@ -115,15 +137,34 @@ function errorPopup(message,timeout){
 	if(timeout != 0){
 	  setTimeout(function () {
 		$('.alert').alert('close')
-		console.log('close')
+		//console.log('close')
 	  }, timeout*1000);
 	}
   }
+
+function getNews(){
+	$.ajax({
+		type: "GET",
+		dataType: "json",
+		url: "https://newsapi.org/v2/everything?q=bitcoin&apiKey=85c8b39f552e4759bb301d88aaef51fb",
+		success: function (response,status) {
+			//console.log(response);
+			var articles = response.articles
+			//console.log(articles)
+
+			var template = $("#all-characters-template").html();
+			var renderTemplate = Mustache.render(template, articles);
+
+			$("body").append(renderTemplate);
+		}
+	});
+}
 
 
 $(document).ready(function () {
 	$(".loading-container").fadeOut("slow");
 	getAllCoins();
+	getNews();
 
 	// $(document).on('click', '.coins-info-btn', function () {
 	// 	getCoinInfo(this);
