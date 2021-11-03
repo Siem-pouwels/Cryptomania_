@@ -85,6 +85,40 @@ function getCoinInfo(selectedButton) {
 	});
 }
 
+function succesPopup(message,timeout){
+	if(timeout == undefined){
+	  timeout = 2.5
+	}
+	var a_message = "";
+	a_message += "<div class='alert alert-success alert-dismissible fade show' role='alert'>";
+	a_message +=  "<strong>Succes!</strong> "+message;
+	a_message += "</div>";
+	$('body').prepend(a_message)
+  
+	if(timeout != 0){
+	  setTimeout(function () {
+		$('.alert').alert('close')
+	  }, timeout*1000);
+	}
+  }
+
+function errorPopup(message,timeout){
+	if(timeout == undefined){
+	  timeout = 2.5
+	}
+	var a_message = "";
+	a_message += "<div class='alert alert-danger alert-dismissible fade show' role='alert'>";
+	a_message +=  "<strong>Error!</strong> "+message;
+	a_message += "</div>";
+	$('body').prepend(a_message)
+  
+	if(timeout != 0){
+	  setTimeout(function () {
+		$('.alert').alert('close')
+		console.log('close')
+	  }, timeout*1000);
+	}
+  }
 
 
 $(document).ready(function () {
