@@ -1,3 +1,5 @@
+var deleteChart;
+
 function getAllCoins() {
 	$.ajax({
 		type: "GET",
@@ -33,19 +35,14 @@ function roundFigures(figure) {
 }
 
 function generateChart(chartDate, chartPrice) {
-	// if (chart) {
-	// 	chart.destroy()
-	// }
-	console.log('dsafdsafadsafdsfdsafdsaafdsfdsfdssfda')
 	var ctx = document.getElementById('coin-history-chart').getContext('2d');
-	
-	
-	// console.log(ctx)
+	if (!deleteChart) {
+		console.log('test');
+	}else{
+		deleteChart.destroy();
+	}
 	var chart = new Chart(ctx, {
-		// The type of chart we want to create
 		type: 'line',
-
-		// The data for our dataset
 		data: {
 			labels: chartDate,
 			datasets: [{
@@ -55,34 +52,20 @@ function generateChart(chartDate, chartPrice) {
 				data: chartPrice,
 			}]
 		},
-
-		// Configuration options go here
 		options: {
 			scales: {
 				xAxes: [{
-					display: true,
-					scaleLabel: {
-						display: true,
-						labelString: 'Date'
-					}
-				}],
-				yAxes: [{
-					display: true,
-					scaleLabel: {
-						display: true,
-						labelString: 'Price'
-					}
+					type: 'linear',
+					position: 'bottom'
 				}]
-			},
-			elements: { point: { radius: 0 } }
+			}
 		}
 	});
+	deleteChart = chart;
 }
 
 function getCoinInfo(selectedButton) {
 	var cryptoId = $(selectedButton).closest("tr").find(".crypto-id").text();
-	var cryptoPrice = $(selectedButton).closest("tr").find(".crypto-price").text();
-	// console.log(cryptoId);
 
 	$.ajax({
 		type: "GET",
@@ -98,17 +81,19 @@ function getCoinInfo(selectedButton) {
 				priceArray.push(value.priceUsd);
 			})
 			generateChart(dateArray, priceArray)
-			// $('#more-info-modal').modal('show');
-			//$("#more-info-modal").append(generateChart(dateArray, priceArray));
 		}
 	});
 }
 
 
-$(document).ready(function(){
-	$(".loading-container").fadeOut("slow");
 
+$(document).ready(function () {
+	$(".loading-container").fadeOut("slow");
 	getAllCoins();
+
+	// $(document).on('click', '.coins-info-btn', function () {
+	// 	getCoinInfo(this);
+	// });
 
 	$(document).on('click', '.coins-info-btn', function () {
 		getCoinInfo(this);

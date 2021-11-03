@@ -7,7 +7,7 @@
             <div class="modal-body">
                 <form id="login-account-form">
                     <input id="email-login" class="amount" name="email-login" type="email" />
-                    <input id="password-login" class="amount" name="password-login" type="password"/>
+                    <input id="password-login" class="amount" name="password-login" type="password" />
                     <button id="login-account" class="btn btn-primary" type="submit">Login</button>
                 </form>
             </div>
