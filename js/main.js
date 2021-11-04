@@ -114,4 +114,21 @@ $(document).ready(function(){
 		getCoinInfo(this);
 	});
 
+	$.ajax({
+		type: "POST",
+		url: "http://127.0.0.1:8000/api/portfolio",
+		data: {
+			name: "bitcoin",
+            price: "2121",
+            amount: "2"
+		},
+		cache: false,
+		success: function (data) {
+			console.log('test')
+		},
+		error: function (xhr, status, error) {
+			console.error(xhr);
+		}
+	});
+
 });

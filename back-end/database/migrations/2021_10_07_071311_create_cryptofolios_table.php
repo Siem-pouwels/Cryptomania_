@@ -14,12 +14,12 @@ class CreateCryptofoliosTable extends Migration
     public function up()
     {
         Schema::create('cryptofolios', function (Blueprint $table) {
-            $table->id();
+            $table->unsignedBigInteger('user_id');
             $table->text('name');
             $table->bigInteger('price');
             $table->integer('amount');
             $table->bigInteger('total_value');
-            $table->dateTime('bought_on');
+            $table->timestamp('bought_on');
             $table->timestamps();
         });
     }
