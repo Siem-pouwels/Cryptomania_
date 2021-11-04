@@ -26,8 +26,8 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-        
-        return response()->json(['message' => 'succes'],200);
+
+        return response()->json(['message' => 'succes'], 200);
     }
 
     public function login(Request $request)
@@ -36,16 +36,16 @@ class AuthController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required']
         ]);
-        if (Auth::attempt($request->only('email', 'password'))){
+        if (Auth::attempt($request->only('email', 'password'))) {
             $userData = Auth::user();
-            $deleteCookie = time()+3600;
+            $deleteCookie = time() + 3600;
             $user['id'] = $userData->id;
             $user['email'] = $userData->email;
             $user['delete_timestamp'] = $deleteCookie;
             return response()->json(['message' => 'succesful', 'user' => $user], 200);
         }
         throw ValidationException::withMessages([
-            'email' =>['The provided credentials are incorect.']
+            'email' => ['The provided credentials are incorect.']
         ]);
     }
     // public function login(Request $request)
@@ -57,5 +57,5 @@ class AuthController extends Controller
     //         return response()->json(['notification' => "Something went wrong"], 401);
     //     }
     // }
-    
+
 }
