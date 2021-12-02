@@ -11,6 +11,9 @@
       <li class="nav-item">
         <a class="nav-link" href="http://localhost/cryptomania/cryptofolio.php">Cryptofolio</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="http://localhost/Cryptomania_/cryptonews.php">Crypto News</a>
+      </li>
       <li class="nav-item" id="show-create-account">
         <button class="nav-link" data-bs-toggle="modal" data-bs-target="#create-account-modal">Create account</button>
       </li>

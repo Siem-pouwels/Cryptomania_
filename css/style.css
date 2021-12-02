@@ -22,3 +22,11 @@
 	height: 25px;
 	width: 25px;
 }
+
+.crypto-volumeUsd24Hr.red {
+	color: red;
+}
+
+.crypto-volumeUsd24Hr.green {
+	color: green;
+}

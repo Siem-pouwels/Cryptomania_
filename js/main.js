@@ -11,12 +11,19 @@ function getAllCoins() {
 			for (let i = 0; i < data.data.length; i++) {
 				data.data[i] = data.data[i]
 			}
+			changeColorState(data);
 
 			$.each(data.data, function (index, value) {
 				value.priceUsd = roundFigures(parseFloat(value.priceUsd))
 				value.marketCapUsd = roundFigures(parseFloat(value.marketCapUsd))
 				value.volumeUsd24Hr = roundFigures(parseFloat(value.volumeUsd24Hr))
 				value.symbolLowerCase = value.symbol.toLowerCase();
+				if(value.volumeUsd24Hr <= 0){
+					value.colorVolume = "red";
+				}
+				if(value.volumeUsd24Hr >= 0){
+					value.colorVolume = "green";
+				}
 			})
 			console.log(data);
 			var template = $("#all-coins-template").html();
@@ -54,6 +61,7 @@ function roundFigures(figure) {
 	nr = Math.round((figure + Number.EPSILON) * 100) / 100;
 	//console.log(nr)
 	return nr;
+	
 }
 
 function generateChart(chartDate, chartPrice) {
@@ -239,6 +247,7 @@ $(document).ready(function () {
 	// authCheck();
 	$(".loading-container").fadeOut("slow");
 	getAllCoins();
+	getNews();
 
 	$(document).on('click', '.coins-info-btn', function () {
 		getCoinInfo(this);

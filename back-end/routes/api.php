@@ -9,6 +9,10 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('portfolio')->group(function () {
         Route::post('', 'App\Http\Controllers\PortfolioController@add');
     });
+    
+});
+Route::prefix('portfolio')->group(function () {
+    Route::post('', 'App\Http\Controllers\PortfolioController@add');
 });
 Route::prefix('user')->group(function () {
     Route::post('create', 'App\Http\Controllers\AuthController@create');
