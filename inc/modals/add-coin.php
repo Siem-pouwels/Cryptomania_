@@ -27,7 +27,7 @@
 
 <div id="add-coin-modal" class="modal fade" role="modal">
     <div class="modal-dialog">
-        <div class="modal-content" id="add-coin-modal">
+        <div class="modal-content">
             {{#.}}
                 <div class="modal-header">
                     <h5 class="modal-title">Add coin {{id}}</h5>
@@ -48,3 +48,20 @@
         </div>
     </div>
 </div>
+
+
+
+<!-- <template id="template-house-modal">
+    {{#.}}
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Edit house {{id}}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            dfasfdsadfsafdsa
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+    {{/.}}
+</template> -->

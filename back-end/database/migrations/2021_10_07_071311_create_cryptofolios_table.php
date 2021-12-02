@@ -14,6 +14,7 @@ class CreateCryptofoliosTable extends Migration
     public function up()
     {
         Schema::create('cryptofolios', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('user_id');
             $table->text('name');
             $table->bigInteger('price');

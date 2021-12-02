@@ -11,17 +11,17 @@ class PortfolioController extends Controller
 {
     public function add(Request $request)
     {
-        // return response()->json("hello");
-        $totalValue = $request->price * $request->amount;
+        $cryptofolio = Cryptofolio::where('user_id', '=', 1)->where('name', '=', 'bitcoin')->first();
+        // dd($cryptofolio);
+        return response()->json($cryptofolio);
         Cryptofolio::create([
-            // 'user_id' => auth()->user()->id,
             'user_id' => 1,
-            'name' => $request->name,
-            'price' => $request->price,
-            'amount' => $request->amount,
-            'total_value' => $totalValue,
+            'name' => 'bitcoin',
+            'price' => 100,
+            'amount' => 69,
+            'total_value' => 6900,
             'bought_on' => Carbon::now(),
         ]);
-        return response()->json($request);
+        return response()->json('succes');
     }
 }
