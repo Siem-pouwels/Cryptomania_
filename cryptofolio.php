@@ -2,6 +2,7 @@
 
 <body class="m-0">
     <?php include('inc/layouts/navbar.php'); ?>
+    <?php include('inc/templates/cryptofolio.php'); ?>
 
     <div class="container">
         <table>
@@ -10,10 +11,13 @@
                 <th>Price</th>
                 <th>Amount</th>
                 <th>Total price</th>
+                <th></th>
             </tr>
-            <tbody>
+            <div id="cryptofolio-table">
+                <tbody>
 
-            </tbody>
+                </tbody>
+            </div>
         </table>
     </div>
 

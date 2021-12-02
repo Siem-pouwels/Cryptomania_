@@ -11,6 +11,7 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 Route::post('portfolio', 'App\Http\Controllers\PortfolioController@add');
+Route::get('portfolio', 'App\Http\Controllers\PortfolioController@get');
 // Route::prefix('portfolio')->group(function () {
 // });
 Route::prefix('user')->group(function () {

@@ -155,6 +155,28 @@ function addCoinInfo(selectedButton) {
 
 }
 
+function getPortfolio() {
+	$.ajax({
+		type: "GET",
+		dataType: "json",
+		headers: [
+			'Access-Control-Allow-Origin',
+		],
+		url: "http://127.0.0.1:8000/api/portfolio",
+		cache: false,
+		success: function (data) {
+			console.log(data)
+			var template = $("#cryptofolio-template").html();
+			var renderTemplate = Mustache.render(template, data);
+			// console.log(renderTemplate)
+			$("tbody").html(renderTemplate);
+		},
+		error: function (xhr, status, error) {
+			console.error(xhr);
+		}
+	});
+}
+
 function addCrypto() {
 	var cryptoId = $("#modal-title-coin").text();
 	console.log(cryptoId);
@@ -174,10 +196,10 @@ function addCrypto() {
 		},
 		cache: false,
 		success: function (data) {
-			console.log(data)
+			succesPopup('Succesfully added' + amount + ' ' + cryptoId, 3)
 		},
 		error: function (xhr) {
-			console.error(xhr);
+			errorPopup('Failed to add' + amount + ' ' + cryptoId, 3)
 		}
 	});
 }
@@ -256,11 +278,12 @@ function createUser() {
 }
 
 $(document).ready(function () {
-	getNews();
+	// getNews();
+	getPortfolio();
 	// addCrypto();
 	// authCheck();
 	$(".loading-container").fadeOut("slow");
-	getAllCoins();
+	// getAllCoins();
 
 	$(document).on('click', '.coins-info-btn', function () {
 		getCoinInfo(this);
