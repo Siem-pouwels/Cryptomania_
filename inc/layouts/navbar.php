@@ -12,10 +12,13 @@
         <a class="nav-link" href="http://localhost/cryptomania/cryptofolio.php">Cryptofolio</a>
       </li>
       <li class="nav-item" id="show-create-account">
-        <span class="nav-link">Create account</span>
+        <button class="nav-link" data-bs-toggle="modal" data-bs-target="#create-account-modal">Create account</button>
       </li>
       <li class="nav-item" id="show-login-account">
-        <span class="nav-link">Login</span>
+        <button id="login-btn" class="nav-link" data-bs-toggle="modal" data-bs-target="#login-account-modal">Login</button>
+      </li>
+      <li class="nav-item">
+        <button id="logout-btn" class="nav-link">Logout</button>
       </li>
     </ul>
   </div>
