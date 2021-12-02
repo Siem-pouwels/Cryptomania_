@@ -8,7 +8,7 @@
     <!-- /Modals -->
     <div class="loading-container"><img src="images/loading.gif"></img></div>
     <!-- Templates -->
-    <?php include('inc/templates/news.php');?>
+    <?php include('inc/templates/news.php'); ?>
     <?php include('inc/layouts/scripts.php'); ?>
 </body>
 

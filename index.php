@@ -16,4 +16,6 @@
     <?php include('inc/layouts/scripts.php'); ?>
 </body>
 
+<?php include('inc/layouts/footer.php'); ?>
+
 </html>

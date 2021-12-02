@@ -35,6 +35,7 @@ function getAllCoins() {
 
 function authCheck() {
 	var cookieObject = getCookieObject();
+	console.log(cookieObject)
 	if (cookieObject === 'unauth') {
 		$('#logout-btn').remove()
 	} else {
@@ -147,24 +148,18 @@ function errorPopup(message, timeout) {
 
 function addCoinInfo(selectedButton) {
 	var cryptoId = $(selectedButton).closest("tr").find(".crypto-id").text();
-	console.log(cryptoId);
-	$.ajax({
-		type: "GET",
-		dataType: "json",
-		url: "https://api.coincap.io/v2/assets/" + cryptoId,
+	var priceUsd = $(selectedButton).closest("tr").find(".crypto-priceUsd").text();
+	$("#modal-title-coin").html(cryptoId);
+	$("[name='amount']").val(1);
+	$("[name='priceUsd']").val(priceUsd);
 
-		success: function (data) {
-			console.log(data)
-			var template = $("#add-coin-modal").html();
-			var renderTemplate = Mustache.render(template, data);
-			// console.log(renderTemplate)
-			// $("#coins-table tbody").append(renderTemplate);
-		}
-	});
 }
 
 function addCrypto() {
-	console.log('sdafsdakufsakdlf')
+	var cryptoId = $("#modal-title-coin").text();
+	console.log(cryptoId);
+	var amount = $("[name='amount']").val();
+	var priceUsd = $("[name='priceUsd']").val();
 	$.ajax({
 		type: "POST",
 		dataType: "json",
@@ -172,13 +167,36 @@ function addCrypto() {
 			'Access-Control-Allow-Origin',
 		],
 		url: "http://127.0.0.1:8000/api/portfolio",
-		data: {},
+		data: {
+			id: cryptoId,
+			amount: amount,
+			priceUsd: priceUsd
+		},
 		cache: false,
 		success: function (data) {
 			console.log(data)
 		},
 		error: function (xhr) {
 			console.error(xhr);
+		}
+	});
+}
+
+
+function getNews() {
+	$.ajax({
+		type: "GET",
+		dataType: "json",
+		url: "https://newsapi.org/v2/everything?q=bitcoin&apiKey=85c8b39f552e4759bb301d88aaef51fb",
+		success: function (response, status) {
+			//console.log(response);
+			var articles = response.articles
+			//console.log(articles)
+
+			var template = $("#all-characters-template").html();
+			var renderTemplate = Mustache.render(template, articles);
+
+			$("body").append(renderTemplate);
 		}
 	});
 }
@@ -215,7 +233,7 @@ function loginUser() {
 function createUser() {
 	var email = document.getElementById("email-create").value;
 	var password = document.getElementById("password-create").value;
-	authCheck();
+	// authCheck();
 	$.ajax({
 		type: "POST",
 		dataType: "json",
@@ -238,27 +256,29 @@ function createUser() {
 }
 
 $(document).ready(function () {
+	getNews();
 	// addCrypto();
 	// authCheck();
 	$(".loading-container").fadeOut("slow");
 	getAllCoins();
 
-	// $(document).on('click', '.coins-info-btn', function () {
-	// 	getCoinInfo(this);
-	// });
+	$(document).on('click', '.coins-info-btn', function () {
+		getCoinInfo(this);
+	});
 
-	// $(document).on('click', '.coins-add-btn', function () {
-	// 	addCrypto(this);
-	// });
+	$(document).on('click', '.coins-add-btn', function () {
+		addCrypto(this);
+	});
 
-	// $(document).on('click', '#coins-add-btn', function () {
-	// 	addCrypto(this);
-	// });
+	$(document).on('click', '#add-coin', function (event) {
+		event.preventDefault();
+		addCrypto(this);
+	});
 
-	// $(document).on('click', '#login-account', function (event) {
-	// 	event.preventDefault();
-	// 	loginUser();
-	// });
+	$(document).on('click', '#login-account', function (event) {
+		event.preventDefault();
+		loginUser();
+	});
 
 	$(document).on('click', '#create-account', function (event) {
 		event.preventDefault();
@@ -266,8 +286,7 @@ $(document).ready(function () {
 	});
 
 	$(document).on('click', '.open-add-coin-button', function () {
-		addCrypto();
-		// addCoinInfo(this);
+		addCoinInfo(this);
 	});
 
 
