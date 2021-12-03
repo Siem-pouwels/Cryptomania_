@@ -4,7 +4,7 @@
     <?php include('inc/layouts/navbar.php'); ?>
     <?php include('inc/templates/cryptofolio.php'); ?>
 
-    <div class="container">
+    <div class="container" id="cryptofolio-table">
         <table>
             <tr>
                 <th>Name</th>
@@ -13,11 +13,9 @@
                 <th>Total price</th>
                 <th></th>
             </tr>
-            <div id="cryptofolio-table">
-                <tbody>
+            <tbody>
 
-                </tbody>
-            </div>
+            </tbody>
         </table>
     </div>
 

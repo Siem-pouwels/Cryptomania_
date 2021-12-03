@@ -152,24 +152,17 @@ function addCoinInfo(selectedButton) {
 	$("#modal-title-coin").html(cryptoId);
 	$("[name='amount']").val(1);
 	$("[name='priceUsd']").val(priceUsd);
-
 }
 
 function getPortfolio() {
 	$.ajax({
 		type: "GET",
 		dataType: "json",
-		headers: [
-			'Access-Control-Allow-Origin',
-		],
 		url: "http://127.0.0.1:8000/api/portfolio",
-		cache: false,
 		success: function (data) {
-			console.log(data)
 			var template = $("#cryptofolio-template").html();
 			var renderTemplate = Mustache.render(template, data);
-			// console.log(renderTemplate)
-			$("tbody").html(renderTemplate);
+			$("#cryptofolio-table tbody").html(renderTemplate);
 		},
 		error: function (xhr, status, error) {
 			console.error(xhr);
@@ -241,8 +234,8 @@ function loginUser() {
 		},
 		cache: false,
 		success: function (data) {
-			var userCookie = "";
-			userCookie = JSON.stringify(data.user);
+			// var userCookie = "";
+			var userCookie = JSON.stringify(data.user);
 			console.log(JSON.stringify(userCookie))
 			// document.cookie = JSON.stringify(data.user);
 		},
@@ -279,7 +272,6 @@ function createUser() {
 
 $(document).ready(function () {
 	// getNews();
-	getPortfolio();
 	// addCrypto();
 	// authCheck();
 	$(".loading-container").fadeOut("slow");
@@ -313,4 +305,5 @@ $(document).ready(function () {
 	});
 
 
+	getPortfolio();
 });
