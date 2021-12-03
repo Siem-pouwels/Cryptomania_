@@ -9,9 +9,9 @@ use Carbon\Carbon;
 class PortfolioController extends Controller
 {
 
-    public function get()
+    public function get(Request $request)
     {
-        $cryptofolio = Cryptofolio::where('user_id', '=', 1)->get();
+        $cryptofolio = Cryptofolio::where('user_id', '=', $request->id)->get();
         return response()->json($cryptofolio);
     }
 

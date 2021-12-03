@@ -43,14 +43,40 @@ function authCheck() {
 	}
 }
 
-function getCookieObject() {
-	console.log(document.cookie)
-	var cookieObject = JSON.parse(document.cookie);
-	console.log(cookieObject);
-	if (cookieObject === undefined || cookieObject === null) {
-		return 'unauth';
+function setCookie(cname, cvalue, exdays) {
+	const d = new Date();
+	d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+	let expires = "expires="+d.toUTCString();
+	document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+	let name = cname + "=";
+	let ca = document.cookie.split(';');
+	for(let i = 0; i < ca.length; i++) {
+	  let c = ca[i];
+	  while (c.charAt(0) == ' ') {
+		c = c.substring(1);
+	  }
+	  if (c.indexOf(name) == 0) {
+		return c.substring(name.length, c.length);
+	  }
 	}
-	return cookieObject;
+	return "";
+  }
+	
+function checkCookie() {
+	let email = getCookie("email");
+	if (email != "") {
+		// you are logged in 
+		alert("Welcome again " + user);
+	} else {
+		// you are not logged in
+		user = prompt("you are not logged in:", "");
+		if (user != "" && user != null) {
+		  setCookie("username", user, 365);
+		}
+	  }
 }
 
 function roundFigures(figure) {
@@ -152,17 +178,27 @@ function addCoinInfo(selectedButton) {
 	$("#modal-title-coin").html(cryptoId);
 	$("[name='amount']").val(1);
 	$("[name='priceUsd']").val(priceUsd);
+
 }
 
 function getPortfolio() {
 	$.ajax({
 		type: "GET",
 		dataType: "json",
+		headers: [
+			'Access-Control-Allow-Origin',
+		],
 		url: "http://127.0.0.1:8000/api/portfolio",
+		cache: false,
+		data: {
+			id: getCookie("id"),
+		},
 		success: function (data) {
+			console.log(data)
 			var template = $("#cryptofolio-template").html();
 			var renderTemplate = Mustache.render(template, data);
-			$("#cryptofolio-table tbody").html(renderTemplate);
+			// console.log(renderTemplate)
+			$("tbody").html(renderTemplate);
 		},
 		error: function (xhr, status, error) {
 			console.error(xhr);
@@ -183,9 +219,10 @@ function addCrypto() {
 		],
 		url: "http://127.0.0.1:8000/api/portfolio",
 		data: {
-			id: cryptoId,
+			cryptoId: cryptoId,
 			amount: amount,
-			priceUsd: priceUsd
+			priceUsd: priceUsd,
+			id: getCookie("id"),
 		},
 		cache: false,
 		success: function (data) {
@@ -231,12 +268,13 @@ function loginUser() {
 		data: {
 			email: email,
 			password: password,
+			id: getCookie("id"),
 		},
 		cache: false,
 		success: function (data) {
-			// var userCookie = "";
-			var userCookie = JSON.stringify(data.user);
-			console.log(JSON.stringify(userCookie))
+			console.log(data);
+			setCookie("email", data.user.email, 365);
+			setCookie("id", data.user.id, 365);
 			// document.cookie = JSON.stringify(data.user);
 		},
 		error: function (xhr, status, error) {
@@ -259,6 +297,7 @@ function createUser() {
 		data: {
 			email: email,
 			password: password,
+			id: getCookie("id"),
 		},
 		cache: false,
 		success: function (data) {
@@ -271,23 +310,41 @@ function createUser() {
 }
 
 $(document).ready(function () {
+	let id = getCookie("id");
+	if (id != "") {
+		$("#login-btn").remove();
+		$("#create-account-modal").remove();
+	}
+	// checkCookie();
 	// getNews();
+	getPortfolio();
 	// addCrypto();
 	// authCheck();
 	$(".loading-container").fadeOut("slow");
-	// getAllCoins();
+	getAllCoins();
 
 	$(document).on('click', '.coins-info-btn', function () {
 		getCoinInfo(this);
 	});
 
 	$(document).on('click', '.coins-add-btn', function () {
-		addCrypto(this);
+		let id = getCookie("id");
+		if (id != "") {
+			addCrypto(this);
+		} else {
+			errorPopup("please login",3);
+	  	}
 	});
 
 	$(document).on('click', '#add-coin', function (event) {
-		event.preventDefault();
-		addCrypto(this);
+		let id = getCookie("id");
+		if (id != "") {
+			event.preventDefault();
+			addCrypto(this);
+		} else {
+			event.preventDefault();
+			errorPopup("please login",3);
+	  	}
 	});
 
 	$(document).on('click', '#login-account', function (event) {
@@ -304,6 +361,11 @@ $(document).ready(function () {
 		addCoinInfo(this);
 	});
 
+	$(document).on('click', '#logout-btn', function () {
+		document.cookie = "id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+		document.cookie = "password=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+		document.cookie = "email=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+	});
 
-	getPortfolio();
+
 });
