@@ -18,7 +18,7 @@
         <button class="nav-link" data-bs-toggle="modal" data-bs-target="#create-account-modal">Create account</button>
       </li>
       <li class="nav-item" id="show-login-account">
-        <button id="login-btn" class="nav-link" data-bs-toggle="modal" data-bs-target="#login-account-modal">Login</button>
+        <button id="login-btn" class="button btn-primary" data-bs-toggle="modal" data-bs-target="#login-account-modal">Login</button>
       </li>
       <li class="nav-item">
         <button id="logout-btn" class="nav-link">Logout</button>
