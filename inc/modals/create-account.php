@@ -7,8 +7,8 @@
             </div>
             <div class="modal-body">
                 <form id="create-account-form">
-                    <input id="email-create" class="amount" name="email-create" type="email" />
-                    <input id="password-create" class="amount" name="password-create" type="password" />
+                    <input id="email-create" class="amount" name="email-create" type="email" placeholder="Email"/>
+                    <input id="password-create" class="amount" name="password-create" type="password" placeholder="Password"/>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
