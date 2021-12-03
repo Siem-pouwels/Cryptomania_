@@ -42,4 +42,11 @@ class PortfolioController extends Controller
         $cryptofolio->save();
         return response()->json('succes');
     }
+    function delete($id)
+    {
+        $objects = Cryptofolio::find($id);
+        $objects->delete();
+        return response()->json('deleted');
+        //delete the object by id
+    }
 }

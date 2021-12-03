@@ -11,11 +11,11 @@
                 <th>Price</th>
                 <th>Amount</th>
                 <th>Total price</th>
-                <th></th>
+                <th>Delete</th>
             </tr>
-            <tbody>
+        <tbody>
 
-            </tbody>
+        </tbody>
         </table>
     </div>
 
