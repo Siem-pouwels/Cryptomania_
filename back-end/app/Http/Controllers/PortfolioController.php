@@ -17,7 +17,7 @@ class PortfolioController extends Controller
 
     public function add(Request $request)
     {
-        $cryptofolio = Cryptofolio::where('user_id', '=', 1)->where('name', '=', $request->id)->first();
+        $cryptofolio = Cryptofolio::where('user_id', '=', $request->id)->where('name', '=', $request->id)->first();
         if ($cryptofolio) {
             $amount = $cryptofolio->amount;
             $amount = $amount + $request->amount;

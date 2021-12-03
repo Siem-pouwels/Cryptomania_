@@ -275,6 +275,9 @@ function loginUser() {
 			console.log(data);
 			setCookie("email", data.user.email, 365);
 			setCookie("id", data.user.id, 365);
+			$("#login-btn").hide();
+			$("#create-account-btn").hide();
+			$("#logout-btn").show();
 			// document.cookie = JSON.stringify(data.user);
 		},
 		error: function (xhr, status, error) {
@@ -311,10 +314,15 @@ function createUser() {
 
 $(document).ready(function () {
 	let id = getCookie("id");
-	if (id != "") {
-		$("#login-btn").remove();
-		$("#create-account-modal").remove();
-	}
+		if (id != "") {
+			$("#logout-btn").show();
+			$("#login-btn").hide();
+			$("#create-account-btn").hide();
+		} else {
+			$("#login-btn").show();
+			$("#create-account-btn").show();
+			$("#logout-btn").hide();
+	  	}
 	// checkCookie();
 	// getNews();
 	getPortfolio();
@@ -365,6 +373,9 @@ $(document).ready(function () {
 		document.cookie = "id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 		document.cookie = "password=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 		document.cookie = "email=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+		$("#login-btn").show();
+		$("#create-account-btn").show();
+		$("#logout-btn").hide();
 	});
 
 
