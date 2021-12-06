@@ -12,8 +12,10 @@
     <div class="loading-container"><img src="images/loading.gif"></img></div>
     <!-- Templates -->
     <?php include('inc/templates/all-coins.php'); ?>
+    <?php include('inc/templates/more-info.php'); ?>
     <!-- /Templates -->
     <?php include('inc/layouts/scripts.php'); ?>
+
 </body>
 
 <?php include('inc/layouts/footer.php'); ?>
