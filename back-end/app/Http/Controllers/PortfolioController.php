@@ -57,4 +57,14 @@ class PortfolioController extends Controller
         }
         return response()->json('Cryptofolio didnt exist', 411);
     }
+    function delete(Request $request, $id)
+    {
+        $cryptofolio = Cryptofolio::find($id);
+        if ($cryptofolio) {
+            $cryptofolio->delete();
+            return response()->json('deleted');
+        }
+        return response()->json('failed to delete');
+        //delete the object by id
+    }
 }

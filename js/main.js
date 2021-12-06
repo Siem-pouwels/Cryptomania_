@@ -211,6 +211,26 @@ function editCoin() {
 	});
 }
 
+function deleteCoin (selectedButton) {
+	var cryptoId = $(selectedButton).closest("tr").find(".crypto-id").text();
+	
+	$.ajax({
+		type: "POST",
+		dataType: "json",
+		url: "http://127.0.0.1:8000/api/portfolio/delete/"+cryptoId,
+
+		success: function (objects) {
+			succesPopup("Succesfully deleted coin");
+			// $(selectedButton).closest("tr").remove();
+			getPortfolio();
+		},
+		error: function () {
+			errorPopup("Failed to delete");
+		}
+	});
+	$(btnDelete).closest("tr").remove();
+}
+
 function getPortfolio() {
 	console.log(parseInt(getCookie("id")));
 	$.ajax({
@@ -358,6 +378,10 @@ $(document).ready(function () {
 
 	$(document).on('click', '.edit-coin-open', function () {
 		getEditCoin(this);
+	});
+
+	$(document).on('click', '#delete-coin', function () {
+		deleteCoin(this);
 	});
 
 	$(document).on('click', '.add-coin', function (event) {
