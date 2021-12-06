@@ -6,11 +6,6 @@ function getAllCoins() {
 		url: "https://api.coincap.io/v2/assets",
 
 		success: function (data) {
-<<<<<<<
-			// console.log(data);
-=======
-
->>>>>>>
 			for (let i = 0; i < data.data.length; i++) {
 				data.data[i] = data.data[i]
 			}
@@ -24,54 +19,13 @@ function getAllCoins() {
 				if (value.changePercent24Hr >= 0) value.color = "green";
 				if (value.changePercent24Hr <= 0) value.color = "red";
 			})
-<<<<<<<
-			// console.log(data);
-=======
-
->>>>>>>
 			var template = $("#all-coins-template").html();
 			var renderTemplate = Mustache.render(template, data);
-<<<<<<<
-			// console.log(renderTemplate)
-=======
-
->>>>>>>
 			$("#coins-table tbody").append(renderTemplate);
 		}
 	});
 }
 
-<<<<<<<
-function openAddCrypto() {
-	$.ajax({
-		type: "GET",
-		dataType: "json",
-		url: "https://api.coincap.io/v2/assets",
-
-		success: function (data) {
-			console.log(data);
-			var template = $("#add-coin-template").html();
-			var renderTemplate = Mustache.render(template, data);
-			// console.log(template);
-			$("#add-coin-modal").append(renderTemplate);
-		}
-	});
-}
-
-
-function authCheck() {
-	var cookieObject = getCookieObject();
-	console.log(cookieObject)
-	if (cookieObject === 'unauth') {
-		$('#logout-btn').remove()
-	} else {
-		$('#login-btn').remove()
-	}
-}
-
-=======
-
->>>>>>>
 function setCookie(cname, cvalue, exdays) {
 	const date = new Date();
 	date.setTime(date.getTime() + (exdays * 24 * 60 * 60 * 1000));
@@ -229,15 +183,35 @@ function getEditCoin(selectedButton) {
 	$("[name='priceUsd']").val(priceUsd);
 }
 
+function editCoin() {
+	var cryptoId = $(".edit-title-coin").text();
+	var amount = $("[name='amount']").val();
+	var priceUsd = $("[name='priceUsd']").val();
+	$.ajax({
+		type: "POST",
+		dataType: "json",
+		headers: [
+			'Access-Control-Allow-Origin',
+		],
+		url: "http://127.0.0.1:8000/api/portfolio/edit/"+cryptoId,
+		data: {
+			cryptoId: cryptoId,
+			amount: amount,
+			priceUsd: priceUsd,
+			id: getCookie("id"),
+		},
+		cache: false,
+		success: function (data) {
+			succesPopup('Succesfully changed the cryptofolio', 3)
+			getPortfolio();
+		},
+		error: function (xhr) {
+			errorPopup('Failed to change', 3)
+		}
+	});
+}
+
 function getPortfolio() {
-<<<<<<<
-    $.ajax({
-        type: "GET",
-        dataType: "json",
-        url: "http://127.0.0.1:8000/api/portfolio",
-        success: function (data) {
-            var template = $("#cryptofolio-template").html();
-=======
 	console.log(parseInt(getCookie("id")));
 	$.ajax({
 		type: "GET",
@@ -252,24 +226,13 @@ function getPortfolio() {
 		},
 		success: function (data) {
 			var template = $("#cryptofolio-template").html();
->>>>>>>
 			var renderTemplate = Mustache.render(template, data);
-<<<<<<<
-			console.log(renderTemplate);
-            $("#cryptofolio-table").html(renderTemplate);
-        },
-        error: function (xhr, status, error) {
-            console.error(xhr);
-        }
-    });
-=======
 			$("#tbody-portfolio").html(renderTemplate);
 		},
 		error: function (xhr, status, error) {
 			console.error(xhr);
 		}
 	});
->>>>>>>
 }
 
 function addCrypto() {
@@ -411,6 +374,11 @@ $(document).ready(function () {
 
 	$(document).on('click', '.edit-coin-open', function () {
 		getEditCoin(this);
+	});
+
+	$(document).on('click', '#edit-coin', function (event) {
+		event.preventDefault();
+		editCoin();
 	});
 
 	$(document).on('click', '.add-coin', function (event) {
