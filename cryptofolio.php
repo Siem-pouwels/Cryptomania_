@@ -4,6 +4,8 @@
     <?php include('inc/layouts/navbar.php'); ?>
     <?php include('inc/templates/cryptofolio.php'); ?>
     <?php include('inc/modals/edit-coin.php'); ?>
+    <?php include('inc/modals/create-account.php'); ?>
+    <?php include('inc/modals/login-account.php'); ?>
 
     <div class="container" id="cryptofolio-table">
         <table class="table">
