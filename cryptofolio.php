@@ -13,11 +13,11 @@
                 <th>Price</th>
                 <th>Amount</th>
                 <th>Total price</th>
-                <th></th>
+                <th>Delete</th>
             </tr>
             <tbody id="tbody-portfolio">
 
-            </tbody>
+        </tbody>
         </table>
     </div>
 

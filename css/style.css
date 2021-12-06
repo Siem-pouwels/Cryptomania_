@@ -30,3 +30,11 @@
 .crypto-volumeUsd24Hr.green {
 	color: green;
 }
+
+.push {
+	float: left;
+	list-style: none;
+	position: relative;
+	left: 800px;
+	margin-right: 10px;
+}

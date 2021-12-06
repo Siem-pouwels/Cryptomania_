@@ -22,8 +22,8 @@
             </div>
             <div class="modal-body">
                 <form id="login-account-form">
-                    <input id="email-login" class="amount" name="email-login" type="email" />
-                    <input id="password-login" class="amount" name="password-login" type="password" />
+                    <input id="email-login" class="amount" name="email-login" type="email" placeholder="Email"/>
+                    <input id="password-login" class="amount" name="password-login" type="password" placeholder="Password" />
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
