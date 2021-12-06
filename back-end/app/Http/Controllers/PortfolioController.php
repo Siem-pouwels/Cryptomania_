@@ -18,6 +18,7 @@ class PortfolioController extends Controller
     public function add(Request $request)
     {
         $cryptofolio = Cryptofolio::where('user_id', '=', $request->id)->where('name', '=', $request->cryptoId)->first();
+        // updates the porfolio if it already exist
         if ($cryptofolio) {
             $amount = $cryptofolio->amount + $request->amount;
             $cryptofolio->amount = $amount;
@@ -28,6 +29,7 @@ class PortfolioController extends Controller
             return response()->json('updated the fields');
         }
 
+        //calculates the price by amount
         $price = $request->priceUsd * $request->amount;
         $cryptofolio = Cryptofolio::create([
             'user_id' => $request->id,
@@ -39,5 +41,20 @@ class PortfolioController extends Controller
         ]);
         $cryptofolio->save();
         return response()->json('succes');
+        //create the object by id
+    }
+
+    function edit(Request $request, $id)
+    {
+        $cryptofolio = Cryptofolio::where('user_id', '=', $request->id)->where('name', '=', $request->cryptoId)->first();
+        if ($cryptofolio) {
+            $cryptofolio->amount = $request->amount;
+            $cryptofolio->price = $request->priceUsd;
+            $cryptofolio->total_value = $request->priceUsd * $request->amount;
+            $cryptofolio->save();
+
+            return response()->json('updated the fields');
+        }
+        return response()->json('Cryptofolio didnt exist', 411);
     }
 }

@@ -15,7 +15,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button id="edit-coin" data-bs-dismiss="modal" class="add-coin btn btn-warning" type="submit">Edit</button>
+                <button id="edit-coin" data-bs-dismiss="modal" class="edit-coin btn btn-warning" type="submit">Edit</button>
                 </form>
             </div>
         </div>

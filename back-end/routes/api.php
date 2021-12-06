@@ -12,6 +12,8 @@ Route::post('user/login', 'App\Http\Controllers\AuthController@login');
 // });
 Route::post('portfolio', 'App\Http\Controllers\PortfolioController@add');
 Route::get('portfolio', 'App\Http\Controllers\PortfolioController@get');
+Route::post('portfolio/delete/{id}', 'App\Http\Controllers\PortfolioController@delete');
+Route::post('portfolio/edit/{id}', 'App\Http\Controllers\PortfolioController@edit');
 // Route::prefix('portfolio')->group(function () {
 // });
 Route::prefix('user')->group(function () {

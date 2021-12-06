@@ -196,6 +196,34 @@ function getEditCoin(selectedButton) {
 	$("[name='priceUsd']").val(priceUsd);
 }
 
+function editCoin() {
+	var cryptoId = $(".edit-title-coin").text();
+	var amount = $("[name='amount']").val();
+	var priceUsd = $("[name='priceUsd']").val();
+	$.ajax({
+		type: "POST",
+		dataType: "json",
+		headers: [
+			'Access-Control-Allow-Origin',
+		],
+		url: "http://127.0.0.1:8000/api/portfolio/edit/" + cryptoId,
+		data: {
+			cryptoId: cryptoId,
+			amount: amount,
+			priceUsd: priceUsd,
+			id: getCookie("id"),
+		},
+		cache: false,
+		success: function (data) {
+			succesPopup('Succesfully changed the cryptofolio', 3)
+			getPortfolio();
+		},
+		error: function (xhr) {
+			errorPopup('Failed to change', 3)
+		}
+	});
+}
+
 function getPortfolio() {
 	console.log(parseInt(getCookie("id")));
 	$.ajax({
@@ -332,6 +360,10 @@ $(document).ready(function () {
 	getPortfolio();
 	$(".loading-container").fadeOut("slow");
 	getAllCoins();
+	$(document).on('click', '#edit-coin', function (event) {
+		event.preventDefault();
+		editCoin();
+	});
 
 	$(document).on('click', '.coins-info-btn', function () {
 		getCoinInfo(this);
