@@ -11,7 +11,6 @@ function getAllCoins() {
 			}
 
 			$.each(data.data, function (index, value) {
-				console.log(value)
 				value.priceUsd = roundFigures(parseFloat(value.priceUsd))
 				value.marketCapUsd = roundFigures(parseFloat(value.marketCapUsd))
 				value.changePercent24Hr = value.changePercent24Hr
@@ -109,6 +108,20 @@ function getCoinInfo(selectedButton) {
 	var cryptoId = $(selectedButton).closest("tr").find(".crypto-id").text().toLowerCase();
 	timeToday = Math.floor(Date.now());
 	timeWeekAgo = Math.floor(Date.now() - 691200000);
+	// get current data from the selected coin and appends it to the modal
+	$.ajax({
+		type: "GET",
+		dataType: "json",
+		url: "https://api.coincap.io/v2/assets/" + cryptoId,
+
+		success: function (data) {
+			console.log(data)
+			var template = $("#more-info-template").html();
+			var renderTemplate = Mustache.render(template, data);
+			console.log(renderTemplate)
+			$("#more-info-modal .more-info-container").html(renderTemplate);
+		}
+	});
 
 	$.ajax({
 		type: "GET",
@@ -242,10 +255,8 @@ function getNews() {
 		url: "https://newsapi.org/v2/everything?q=bitcoin&apiKey=85c8b39f552e4759bb301d88aaef51fb",
 		success: function (response) {
 			var articles = response.articles
-
 			var template = $("#all-characters-template").html();
 			var renderTemplate = Mustache.render(template, articles);
-
 			$("body").append(renderTemplate);
 		}
 	});
@@ -274,7 +285,6 @@ function loginUser() {
 			$("#login-btn").hide();
 			$("#create-account-btn").hide();
 			$("#logout-btn").show();
-			// document.cookie = JSON.stringify(data.user);
 		},
 		error: function (xhr, status, error) {
 			console.error(xhr);

@@ -6,6 +6,9 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
+        <div class="more-info-container">
+
+        </div>
         <div class="more-info-id"></div>
         <div class="more-info-price"></div>
         <div class="more-info-id"></div>
