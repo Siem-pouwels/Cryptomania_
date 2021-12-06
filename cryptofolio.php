@@ -3,17 +3,19 @@
 <body class="m-0">
     <?php include('inc/layouts/navbar.php'); ?>
     <?php include('inc/templates/cryptofolio.php'); ?>
+    <?php include('inc/modals/edit-coin.php'); ?>
 
     <div class="container" id="cryptofolio-table">
-        <table>
+        <table class="table">
             <tr>
+                <th>Id</th>
                 <th>Name</th>
                 <th>Price</th>
                 <th>Amount</th>
                 <th>Total price</th>
                 <th></th>
             </tr>
-            <tbody>
+            <tbody id="tbody-portfolio">
 
             </tbody>
         </table>

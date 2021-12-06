@@ -1,5 +1,4 @@
 var deleteChart;
-var priceUsd;
 function getAllCoins() {
 	$.ajax({
 		type: "GET",
@@ -7,64 +6,48 @@ function getAllCoins() {
 		url: "https://api.coincap.io/v2/assets",
 
 		success: function (data) {
-			console.log(data);
 			for (let i = 0; i < data.data.length; i++) {
 				data.data[i] = data.data[i]
 			}
 
 			$.each(data.data, function (index, value) {
+				console.log(value)
 				value.priceUsd = roundFigures(parseFloat(value.priceUsd))
 				value.marketCapUsd = roundFigures(parseFloat(value.marketCapUsd))
-				value.volumeUsd24Hr = roundFigures(parseFloat(value.volumeUsd24Hr))
+				value.changePercent24Hr = value.changePercent24Hr
 				value.symbolLowerCase = value.symbol.toLowerCase();
-				if (value.volumeUsd24Hr <= 0) value.colorVolume = "red";
-				if (value.volumeUsd24Hr >= 0) value.colorVolume = "green";
+				if (value.changePercent24Hr >= 0) value.color = "green";
+				if (value.changePercent24Hr <= 0) value.color = "red";
 			})
-			console.log(data);
 			var template = $("#all-coins-template").html();
 			var renderTemplate = Mustache.render(template, data);
-			console.log(renderTemplate)
 			$("#coins-table tbody").append(renderTemplate);
 		}
 	});
 }
 
-// function openAddCrypto(this) {
-
-// }
-
-function authCheck() {
-	var cookieObject = getCookieObject();
-	console.log(cookieObject)
-	if (cookieObject === 'unauth') {
-		$('#logout-btn').remove()
-	} else {
-		$('#login-btn').remove()
-	}
-}
-
 function setCookie(cname, cvalue, exdays) {
-	const d = new Date();
-	d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-	let expires = "expires="+d.toUTCString();
+	const date = new Date();
+	date.setTime(date.getTime() + (exdays * 24 * 60 * 60 * 1000));
+	let expires = "expires=" + date.toUTCString();
 	document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 
 function getCookie(cname) {
 	let name = cname + "=";
 	let ca = document.cookie.split(';');
-	for(let i = 0; i < ca.length; i++) {
-	  let c = ca[i];
-	  while (c.charAt(0) == ' ') {
-		c = c.substring(1);
-	  }
-	  if (c.indexOf(name) == 0) {
-		return c.substring(name.length, c.length);
-	  }
+	for (let i = 0; i < ca.length; i++) {
+		let c = ca[i];
+		while (c.charAt(0) == ' ') {
+			c = c.substring(1);
+		}
+		if (c.indexOf(name) == 0) {
+			return c.substring(name.length, c.length);
+		}
 	}
 	return "";
-  }
-	
+}
+
 function checkCookie() {
 	let email = getCookie("email");
 	if (email != "") {
@@ -74,25 +57,20 @@ function checkCookie() {
 		// you are not logged in
 		user = prompt("you are not logged in:", "");
 		if (user != "" && user != null) {
-		  setCookie("username", user, 365);
+			setCookie("username", user, 365);
 		}
-	  }
+	}
 }
 
 function roundFigures(figure) {
 	nr = Math.round((figure + Number.EPSILON) * 100) / 100;
-	//console.log(nr)
 	return nr;
-
 }
 
 function generateChart(chartDate, chartPrice) {
 	var ctx = document.getElementById('coin-history-chart').getContext('2d');
-	if (!deleteChart) {
-		console.log('test');
-	} else {
-		deleteChart.destroy();
-	}
+	if (!deleteChart); else deleteChart.destroy();
+
 	var chart = new Chart(ctx, {
 		type: 'line',
 		data: {
@@ -107,34 +85,50 @@ function generateChart(chartDate, chartPrice) {
 		options: {
 			scales: {
 				xAxes: [{
-					type: 'linear',
-					position: 'bottom'
+					display: true,
+					scaleLabel: {
+						display: true,
+						labelString: 'Date'
+					}
+				}],
+				yAxes: [{
+					display: true,
+					scaleLabel: {
+						display: true,
+						labelString: 'Price'
+					}
 				}]
-			}
+			},
+			elements: { point: { radius: 0 } }
 		}
 	});
 	deleteChart = chart;
 }
 
 function getCoinInfo(selectedButton) {
-	var cryptoId = $(selectedButton).closest("tr").find(".crypto-id").text();
+	var cryptoId = $(selectedButton).closest("tr").find(".crypto-id").text().toLowerCase();
+	timeToday = Math.floor(Date.now());
+	timeWeekAgo = Math.floor(Date.now() - 691200000);
 
 	$.ajax({
 		type: "GET",
 		dataType: "json",
-		url: "https://api.coincap.io/v2/assets/" + cryptoId + "/history?interval=d1",
+		url: "https://api.coincap.io/v2/assets/" + cryptoId + "/history?interval=d1&start=" + timeWeekAgo + "&end=" + timeToday + "",
 
 		success: function (historicalData) {
 			var dateArray = [];
 			var priceArray = [];
-
 			$.each(historicalData.data, function (index, value) {
-				dateArray.push(value.date);
+				dateArray.push(value.date.replace("T00:00:00.000Z", ""))
 				priceArray.push(value.priceUsd);
 			})
 			generateChart(dateArray, priceArray)
 		}
 	});
+}
+
+function updatePrice(form) {
+	console.log(form.closest('form'))
 }
 
 function succesPopup(message, timeout) {
@@ -167,7 +161,6 @@ function errorPopup(message, timeout) {
 	if (timeout != 0) {
 		setTimeout(function () {
 			$('.alert').alert('close')
-			console.log('close')
 		}, timeout * 1000);
 	}
 }
@@ -175,13 +168,23 @@ function errorPopup(message, timeout) {
 function addCoinInfo(selectedButton) {
 	var cryptoId = $(selectedButton).closest("tr").find(".crypto-id").text();
 	var priceUsd = $(selectedButton).closest("tr").find(".crypto-priceUsd").text();
+
 	$("#modal-title-coin").html(cryptoId);
 	$("[name='amount']").val(1);
 	$("[name='priceUsd']").val(priceUsd);
+}
 
+function getEditCoin(selectedButton) {
+	var cryptoId = $(selectedButton).closest("tr").find(".crypto-name").text();
+	var priceUsd = $(selectedButton).closest("tr").find(".crypto-priceUsd").text();
+	var amount = $(selectedButton).closest("tr").find(".crypto-amount").text();
+	$(".edit-title-coin").html(cryptoId);
+	$("[name='amount']").val(amount);
+	$("[name='priceUsd']").val(priceUsd);
 }
 
 function getPortfolio() {
+	console.log(parseInt(getCookie("id")));
 	$.ajax({
 		type: "GET",
 		dataType: "json",
@@ -191,14 +194,12 @@ function getPortfolio() {
 		url: "http://127.0.0.1:8000/api/portfolio",
 		cache: false,
 		data: {
-			id: getCookie("id"),
+			id: parseInt(getCookie("id")),
 		},
 		success: function (data) {
-			console.log(data)
 			var template = $("#cryptofolio-template").html();
 			var renderTemplate = Mustache.render(template, data);
-			// console.log(renderTemplate)
-			$("tbody").html(renderTemplate);
+			$("#tbody-portfolio").html(renderTemplate);
 		},
 		error: function (xhr, status, error) {
 			console.error(xhr);
@@ -208,7 +209,6 @@ function getPortfolio() {
 
 function addCrypto() {
 	var cryptoId = $("#modal-title-coin").text();
-	console.log(cryptoId);
 	var amount = $("[name='amount']").val();
 	var priceUsd = $("[name='priceUsd']").val();
 	$.ajax({
@@ -226,10 +226,10 @@ function addCrypto() {
 		},
 		cache: false,
 		success: function (data) {
-			succesPopup('Succesfully added' + amount + ' ' + cryptoId, 3)
+			succesPopup('Succesfully added ' + amount + ' ' + cryptoId, 3)
 		},
 		error: function (xhr) {
-			errorPopup('Failed to add' + amount + ' ' + cryptoId, 3)
+			errorPopup('Failed to add ' + amount + ' ' + cryptoId, 3)
 		}
 	});
 }
@@ -240,10 +240,8 @@ function getNews() {
 		type: "GET",
 		dataType: "json",
 		url: "https://newsapi.org/v2/everything?q=bitcoin&apiKey=85c8b39f552e4759bb301d88aaef51fb",
-		success: function (response, status) {
-			//console.log(response);
+		success: function (response) {
 			var articles = response.articles
-			//console.log(articles)
 
 			var template = $("#all-characters-template").html();
 			var renderTemplate = Mustache.render(template, articles);
@@ -256,7 +254,6 @@ function getNews() {
 function loginUser() {
 	var email = document.getElementById("email-login").value;
 	var password = document.getElementById("password-login").value;
-	// console.log(input);
 
 	$.ajax({
 		type: "POST",
@@ -272,7 +269,6 @@ function loginUser() {
 		},
 		cache: false,
 		success: function (data) {
-			console.log(data);
 			setCookie("email", data.user.email, 365);
 			setCookie("id", data.user.id, 365);
 			$("#login-btn").hide();
@@ -289,7 +285,6 @@ function loginUser() {
 function createUser() {
 	var email = document.getElementById("email-create").value;
 	var password = document.getElementById("password-create").value;
-	// authCheck();
 	$.ajax({
 		type: "POST",
 		dataType: "json",
@@ -314,20 +309,17 @@ function createUser() {
 
 $(document).ready(function () {
 	let id = getCookie("id");
-		if (id != "") {
-			$("#logout-btn").show();
-			$("#login-btn").hide();
-			$("#create-account-btn").hide();
-		} else {
-			$("#login-btn").show();
-			$("#create-account-btn").show();
-			$("#logout-btn").hide();
-	  	}
-	// checkCookie();
-	// getNews();
+	if (id != "") {
+		$("#logout-btn").show();
+		$("#login-btn").hide();
+		$("#create-account-btn").hide();
+	} else {
+		$("#login-btn").show();
+		$("#create-account-btn").show();
+		$("#logout-btn").hide();
+	}
+	getNews();
 	getPortfolio();
-	// addCrypto();
-	// authCheck();
 	$(".loading-container").fadeOut("slow");
 	getAllCoins();
 
@@ -335,24 +327,19 @@ $(document).ready(function () {
 		getCoinInfo(this);
 	});
 
-	$(document).on('click', '.coins-add-btn', function () {
-		let id = getCookie("id");
-		if (id != "") {
-			addCrypto(this);
-		} else {
-			errorPopup("please login",3);
-	  	}
+	$(document).on('click', '.edit-coin-open', function () {
+		getEditCoin(this);
 	});
 
-	$(document).on('click', '#add-coin', function (event) {
+	$(document).on('click', '.add-coin', function (event) {
 		let id = getCookie("id");
 		if (id != "") {
 			event.preventDefault();
 			addCrypto(this);
 		} else {
 			event.preventDefault();
-			errorPopup("please login",3);
-	  	}
+			errorPopup("please login", 3);
+		}
 	});
 
 	$(document).on('click', '#login-account', function (event) {
@@ -377,6 +364,4 @@ $(document).ready(function () {
 		$("#create-account-btn").show();
 		$("#logout-btn").hide();
 	});
-
-
 });

@@ -17,14 +17,12 @@ class PortfolioController extends Controller
 
     public function add(Request $request)
     {
-        $cryptofolio = Cryptofolio::where('user_id', '=', $request->id)->where('name', '=', $request->id)->first();
+        $cryptofolio = Cryptofolio::where('user_id', '=', $request->id)->where('name', '=', $request->cryptoId)->first();
         if ($cryptofolio) {
-            $amount = $cryptofolio->amount;
-            $amount = $amount + $request->amount;
-            $priceUsd = $request->priceUsd;
+            $amount = $cryptofolio->amount + $request->amount;
             $cryptofolio->amount = $amount;
-            $cryptofolio->price = $priceUsd;
-            $cryptofolio->total_value = $priceUsd * $amount;
+            $cryptofolio->price = $request->priceUsd;
+            $cryptofolio->total_value = $request->priceUsd * $amount;
             $cryptofolio->save();
 
             return response()->json('updated the fields');
@@ -32,8 +30,8 @@ class PortfolioController extends Controller
 
         $price = $request->priceUsd * $request->amount;
         $cryptofolio = Cryptofolio::create([
-            'user_id' => 1,
-            'name' => $request->id,
+            'user_id' => $request->id,
+            'name' => $request->cryptoId,
             'price' => $request->priceUsd,
             'amount' => $request->amount,
             'total_value' => $price,
