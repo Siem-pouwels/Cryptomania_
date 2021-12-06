@@ -47,19 +47,6 @@ function getCookie(cname) {
 	return "";
 }
 
-function checkCookie() {
-	let email = getCookie("email");
-	if (email != "") {
-		// you are logged in 
-		alert("Welcome again " + user);
-	} else {
-		// you are not logged in
-		user = prompt("you are not logged in:", "");
-		if (user != "" && user != null) {
-			setCookie("username", user, 365);
-		}
-	}
-}
 
 function roundFigures(figure) {
 	nr = Math.round((figure + Number.EPSILON) * 100) / 100;
