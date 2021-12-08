@@ -131,6 +131,19 @@ function getCoinInfo(selectedButton) {
 	// do some math to get the data of 7 days ago.
 	timeToday = Math.floor(Date.now());
 	timeWeekAgo = Math.floor(Date.now() - 691200000);
+	$.ajax({
+		type: "GET",
+		dataType: "json",
+		url: "https://api.coincap.io/v2/assets/" + cryptoId,
+
+		success: function (data) {
+			console.log(data)
+			var template = $("#more-info-template").html();
+			var renderTemplate = Mustache.render(template, data);
+			console.log(renderTemplate)
+			$("#more-info-modal .more-info-container").html(renderTemplate);
+		}
+	});
 
 	$.ajax({
 		type: "GET",
@@ -242,13 +255,13 @@ function editCoin() {
 	});
 }
 
-function deleteCoin (selectedButton) {
+function deleteCoin(selectedButton) {
 	var cryptoId = $(selectedButton).closest("tr").find(".crypto-id").text();
-	
+
 	$.ajax({
 		type: "POST",
 		dataType: "json",
-		url: "http://127.0.0.1:8000/api/portfolio/delete/"+cryptoId,
+		url: "http://127.0.0.1:8000/api/portfolio/delete/" + cryptoId,
 
 		success: function (objects) {
 			succesPopup("Succesfully deleted coin");
