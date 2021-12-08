@@ -6,16 +6,9 @@ function getAllCoins() {
 		url: "https://api.coincap.io/v2/assets",
 
 		success: function (data) {
-			// console.log(data);
-			// put data in array.
-			for (let i = 0; i < data.data.length; i++) {
-				data.data[i] = data.data[i]
-			}
-
 			// for each entry of data in the array round the prices.
 			// after that we check if the values have increased or decreased.
 			$.each(data.data, function (index, value) {
-				console.log(value)
 				value.priceUsd = roundFigures(parseFloat(value.priceUsd))
 				value.marketCapUsd = roundFigures(parseFloat(value.marketCapUsd))
 				value.changePercent24Hr = value.changePercent24Hr
@@ -23,29 +16,10 @@ function getAllCoins() {
 				if (value.changePercent24Hr >= 0) value.color = "green";
 				if (value.changePercent24Hr <= 0) value.color = "red";
 			})
-			// console.log(data);
-
 			// render the template using mustache and the data we recieved.
 			var template = $("#all-coins-template").html();
 			var renderTemplate = Mustache.render(template, data);
-			// console.log(renderTemplate)
 			$("#coins-table tbody").append(renderTemplate);
-		}
-	});
-}
-
-function openAddCrypto() {
-	$.ajax({
-		type: "GET",
-		dataType: "json",
-		url: "https://api.coincap.io/v2/assets",
-
-		success: function (data) {
-			console.log(data);
-			var template = $("#add-coin-template").html();
-			var renderTemplate = Mustache.render(template, data);
-			// console.log(template);
-			$("#add-coin-modal").append(renderTemplate);
 		}
 	});
 }
@@ -65,7 +39,7 @@ function getCookie(cname) {
 	let name = cname + "=";
 	// split the cookie so we can use it in a loop.
 	let ca = document.cookie.split(';');
-	//use the lenth of the cookie to return the cookie where the function is called.
+	//use the length of the cookie to return the cookie where the function is called.
 	for (let i = 0; i < ca.length; i++) {
 		let c = ca[i];
 		while (c.charAt(0) == ' ') {
@@ -137,19 +111,12 @@ function getCoinInfo(selectedButton) {
 		url: "https://api.coincap.io/v2/assets/" + cryptoId,
 
 		success: function (data) {
-			// <b>Name:</b> {{name}}<br>
-			// <b>priceUsd:</b> {{priceUsd}}<br>
-			// <b>Max supply:</b> {{maxSupply}}<br>
-			// <b>Volume Usd 24Hr:</b> {{volumeUsd24Hr}}<br>
-			// <b>Supply:</b> {{supply}}<br>
-
 			data.data.priceUsd = roundFigures(parseFloat(data.data.priceUsd))
 			data.data.maxSupply = roundFigures(parseFloat(data.data.maxSupply))
 			data.data.volumeUsd24Hr = roundFigures(parseFloat(data.data.volumeUsd24Hr))
 			data.data.supply = roundFigures(parseFloat(data.data.supply))
 			var template = $("#more-info-template").html();
 			var renderTemplate = Mustache.render(template, data);
-			console.log(renderTemplate)
 			$("#more-info-modal .more-info-container").html(renderTemplate);
 		}
 	});
@@ -160,7 +127,7 @@ function getCoinInfo(selectedButton) {
 		url: "https://api.coincap.io/v2/assets/" + cryptoId + "/history?interval=d1&start=" + timeWeekAgo + "&end=" + timeToday + "",
 
 		success: function (historicalData) {
-			// we use historicalData to full up dateArray and priceArray these arrays are used for generating the chart.
+			// we use historicalData to fill up dateArray and priceArray these arrays are used for generating the chart.
 			// we get the dates we need and push them in dateArray.
 			// we get the prices we need and push them in the priceArray.
 			var dateArray = [];
@@ -178,10 +145,6 @@ function updateCoinVal(amount) {
 	var priceUsd = $("[name='priceUsd']").val();
 	var totalVal = priceUsd * amount;
 	$("[name='totalValue']").val(totalVal)
-}
-
-function updatePrice(form) {
-	console.log(form.closest('form'))
 }
 
 function succesPopup(message, timeout) {
@@ -265,7 +228,7 @@ function editCoin() {
 			succesPopup('Succesfully changed the cryptofolio', 3)
 			getPortfolio();
 		},
-		error: function (xhr) {
+		error: function () {
 			errorPopup('Failed to change', 3)
 		}
 	});
@@ -292,7 +255,6 @@ function deleteCoin(selectedButton) {
 }
 
 function getPortfolio() {
-	console.log(parseInt(getCookie("id")));
 	// uses users id to recieve the portfolio of that user
 	$.ajax({
 		type: "GET",
@@ -432,7 +394,7 @@ $(document).ready(function () {
 		$("#create-account-btn").show();
 		$("#logout-btn").hide();
 	}
-	// call all the functions for receiving coincap data
+	// call all the functions for receiving api data
 	getNews();
 	getPortfolio();
 	$(".loading-container").fadeOut("slow");

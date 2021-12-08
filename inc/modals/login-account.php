@@ -1,18 +1,3 @@
-<!-- <div id="login-account-modal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Login</h4>
-            </div>
-            <div class="modal-body">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="login-account-modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div> -->
-
 <div id="login-account-modal" class="modal fade" role="modal">
     <div class="modal-dialog">
         <div class="modal-content">

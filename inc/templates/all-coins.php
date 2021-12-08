@@ -11,5 +11,4 @@
             <td><button class="button btn-primary open-add-coin-button" data-bs-toggle="modal" data-bs-target="#add-coin-modal">Add</button></td>
         </tr>
     {{/data}}
-    <!-- <input type="submit" value="Submit"> -->
 </template>
