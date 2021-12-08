@@ -137,7 +137,16 @@ function getCoinInfo(selectedButton) {
 		url: "https://api.coincap.io/v2/assets/" + cryptoId,
 
 		success: function (data) {
-			console.log(data)
+			// <b>Name:</b> {{name}}<br>
+			// <b>priceUsd:</b> {{priceUsd}}<br>
+			// <b>Max supply:</b> {{maxSupply}}<br>
+			// <b>Volume Usd 24Hr:</b> {{volumeUsd24Hr}}<br>
+			// <b>Supply:</b> {{supply}}<br>
+
+			data.data.priceUsd = roundFigures(parseFloat(data.data.priceUsd))
+			data.data.maxSupply = roundFigures(parseFloat(data.data.maxSupply))
+			data.data.volumeUsd24Hr = roundFigures(parseFloat(data.data.volumeUsd24Hr))
+			data.data.supply = roundFigures(parseFloat(data.data.supply))
 			var template = $("#more-info-template").html();
 			var renderTemplate = Mustache.render(template, data);
 			console.log(renderTemplate)
@@ -163,6 +172,12 @@ function getCoinInfo(selectedButton) {
 			generateChart(dateArray, priceArray)
 		}
 	});
+}
+
+function updateCoinVal(amount) {
+	var priceUsd = $("[name='priceUsd']").val();
+	var totalVal = priceUsd * amount;
+	$("[name='totalValue']").val(totalVal)
 }
 
 function updatePrice(form) {
@@ -215,6 +230,7 @@ function addCoinInfo(selectedButton) {
 	$("#modal-title-coin").html(cryptoId);
 	$("[name='amount']").val(1);
 	$("[name='priceUsd']").val(priceUsd);
+	$("[name='totalValue']").val(priceUsd);
 }
 
 function getEditCoin(selectedButton) {
